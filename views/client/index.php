@@ -2,7 +2,7 @@
 require dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR.'vendor/autoload.php';
 use App\App;
 
-    $user = App::getAuth()->user();
+App::getAuth()->requireRole('CLIENT', 'ADMIN');
 
 ?>
 <?php if ( isset( $match['params']['login'] ) ): ?>

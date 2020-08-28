@@ -1,6 +1,6 @@
 <?php
 
-use App\Router;
+use App\App;
 
 require '../vendor/autoload.php';
 
@@ -8,8 +8,7 @@ $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
 
-$router = new Router(dirname(__DIR__)."/views");
-
+$router = App::getRouter();
 
 $router
 
@@ -24,7 +23,7 @@ $router
 
     //logout
     ->get('/logout', 'all/logout')
-    
+
     //register
     ->get('/register','all/register','register')
     ->post('/register','all/register')

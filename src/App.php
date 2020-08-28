@@ -3,11 +3,23 @@
 namespace App;
 
 use PDO;
+use App\Router;
 
 class App{
 
     public static $pdo;
     public static $auth;
+    public static $router;
+
+    public static function getRouter():Router
+    {
+        if ( !self::$router )
+        {
+            self::$router = new Router(dirname(__DIR__)."/views");
+        }
+
+        return self::$router;
+    }
 
     public static function getPDO(): PDO
     {
@@ -25,7 +37,7 @@ class App{
     {
         if (!self::$auth)
         {
-            self::$auth = new Auth(self::getPDO());
+            self::$auth = new Auth(self::getPDO(), self::getRouter()->url('login-refused').'1');
         }
 
         return self::$auth;

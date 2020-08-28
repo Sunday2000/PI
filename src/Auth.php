@@ -9,10 +9,11 @@ use PDO;
 class Auth
 {
     private $pdo;
-
-    public function __construct(PDO $pdo)
+    private $loginPath;
+    public function __construct(PDO $pdo, string $loginPath)
     {
         $this->pdo = $pdo;
+        $this->loginPath = $loginPath;
     }
 
     public function user(): ?User
@@ -89,12 +90,12 @@ class Auth
         
     }
 
-    public function requireRole(string $role, Router $router): void
+    public function requireRole(string ...$roles): void
     {
         $user = $this->user();
         if ( $user === null )
         {
-            $forbid = $router->url('login-refused').'1';
+            $forbid = $this->loginPath;
             header("Location: $forbid");
             exit();
         }else
@@ -106,9 +107,9 @@ class Auth
             ]);
             $role = $query->fetch(PDO::FETCH_ASSOC);
 
-            if ( $role['role_user'] !== $role)
+            if (  ! in_array($role['role_user'], $roles))
             {
-                $forbid = $router->url('login-refused').'1';
+                $forbid = $this->loginPath;
                 header("Location: $forbid");
                 exit();
             }
