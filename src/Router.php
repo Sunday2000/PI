@@ -39,7 +39,7 @@ class Router
             {
                 $view = $this->view_path.DIRECTORY_SEPARATOR.$match['target'].'.php';
                 $router = $this;
-                if ($match['name'] !== 'home')
+                if ($match['name'] !== 'welcome')
                 {
                     ob_start();
                         require $view;

@@ -20,19 +20,19 @@ if ($_POST)
 
     if ( ! $error)
     {
-        $success = false;
 
         if ( ! (empty($_POST['name']) || empty($_POST['surname']) || empty($_POST['tel']) || 
         empty($_POST['email']) || empty($_POST['password']) || empty($_POST['terms']) || empty($_POST['service']) ) )
         {
             $success = $insert->register($_POST);
+            
+            if ( $success )
+            {
+                $login_path = $router->url('register-success').'success';
+                header("Location: $login_path ");
+            }
         }
         
-        if ( $success )
-        {
-            $login_path = $router->url('register-success').'success';
-            header("Location: $login_path ");
-        }
     }
 
 }
