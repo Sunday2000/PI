@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "033ca90ebb492477d5cc46807cac03bf",
+    "content-hash": "518ea40e93b285a3960ba8dd7f749d07",
     "packages": [
         {
             "name": "altorouter/altorouter",
@@ -61,6 +61,46 @@
                 "routing"
             ],
             "time": "2019-11-23T11:01:41+00:00"
+        },
+        {
+            "name": "ayubirz/perfect-money-api",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AyubIRZ/PerfectMoneyAPI.git",
+                "reference": "ab6a35e9abd1278381944a2d81fbecae4de867da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AyubIRZ/PerfectMoneyAPI/zipball/ab6a35e9abd1278381944a2d81fbecae4de867da",
+                "reference": "ab6a35e9abd1278381944a2d81fbecae4de867da",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AyubIRZ\\PerfectMoneyAPI\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "AyubIRZ",
+                    "email": "ayubirazeh@gmail.com"
+                }
+            ],
+            "description": "This package lets you easily integrate PerfectMoney API into your PHP application.",
+            "keywords": [
+                "perfectmoney",
+                "php"
+            ],
+            "time": "2019-06-23T19:35:01+00:00"
         },
         {
             "name": "filp/whoops",
@@ -523,7 +563,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "ayubirz/perfect-money-api": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

@@ -15,13 +15,14 @@ $pdo->exec('TRUNCATE TABLE service');
 $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
 
 $users = [];
-$services = [];
+$services = ["PRET","INVESTISSEMENT"];
 $roles = ['CLIENT', 'ADMIN'];
+$today = new DateTime("now");
 
-for ( $i = 1; $i <= 4; $i++)
+foreach ( $services as $service)
 {
-    $pdo->exec("INSERT INTO service VALUES(NULL, '$faker->word', '$faker->date $faker->time')");
-    $services[] = $pdo->lastInsertId();
+    $pdo->exec("INSERT INTO service VALUES(NULL, '$service', '$faker->date $faker->time')");
+    $services_id[] = $pdo->lastInsertId();
 }
 
 foreach ($roles as $role)
@@ -34,7 +35,11 @@ $password = password_hash('123456789', PASSWORD_BCRYPT);
 for ( $i = 1; $i <= 10; $i++)
 {
     $role = rand(1, count($roles));
-    $service = rand(1, count($services));
-    $pdo->exec("INSERT INTO user (name, role_id, service_id, surname, tel, email, password, terms, created_at) VALUES('$faker->name', '$role', '$service', '$faker->name', '$faker->phoneNumber', '$faker->email', '$password', true, '$faker->date $faker->time')");
+    $pdo->exec("INSERT INTO user (name, role_id, surname, profession, country, city, salary, sex, tel, email, balance, password, terms, created_at) VALUES('$faker->lastName', '$role', '$faker->firstName', '$faker->jobTitle', '$faker->country', '$faker->city', 123500, '$faker->title', '$faker->phoneNumber', '$faker->email', 023, '$password', true, '$faker->date $faker->time')");
     $users[] = $pdo->lastInsertId();
+}
+
+for ( $i = 1; $i <= 11; $i++)
+{
+    $pdo->exec("INSERT INTO operation (user_id, service_id, amount, bank, bank_number, date, validate, withdrawal_way, created_at) VALUES('$i', 2, '4000', NULL, NULL, '{$today->format("Y-m-d H:i:s")}', 0, 'Perfect Money', '$faker->date $faker->time')");
 }

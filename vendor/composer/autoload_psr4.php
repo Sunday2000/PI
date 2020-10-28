@@ -12,5 +12,6 @@ return array(
     'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Faker\\' => array($vendorDir . '/fzaninotto/faker/src/Faker'),
+    'AyubIRZ\\PerfectMoneyAPI\\' => array($vendorDir . '/ayubirz/perfect-money-api/src'),
     'App\\' => array($baseDir . '/src'),
 );

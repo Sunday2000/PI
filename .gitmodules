@@ -1,0 +1,3 @@
+[submodule "perfect-money-api"]
+	path = perfect-money-api
+	url = ./vendor/ayubirz/perfect-money-api

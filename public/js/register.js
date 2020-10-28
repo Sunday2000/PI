@@ -2,12 +2,12 @@
     let form = document.getElementById('register-form');
     let user_input = form.querySelectorAll('.u_input');
     let checkbox = document.getElementById('terms');
-    let select = document.getElementById('services');
+    //let select = document.getElementById('services');
     
 
-    let removeError = (input) =>{
-        let parent = input.parentElement;
-        input.classList.remove('is-invalid');
+    let removeError = (element) =>{
+        let parent = element.parentElement;
+        element.classList.remove('is-invalid');
 
         if (parent.lastElementChild.className === "invalid")
         {
@@ -20,6 +20,7 @@
     let check = (input, apply, message) => {
         
         let parent = input.parentElement;
+        let msg = document.createElement('div');
 
         input.classList.add('is-invalid');
 
@@ -29,7 +30,6 @@
             label.classList.add('invalid-label');
         }
         
-        let msg = document.createElement('div');
         msg.className="invalid";
         msg.textContent = message;
         
@@ -68,24 +68,28 @@
             }
         }
 
-        if (checkbox.checked === false )
+        if ( checkbox !== null)
         {
-            check(checkbox, false,"Vous devez accepter les terms");
+            if (checkbox.checked === false )
+            {
+                check(checkbox, false,"Vous devez accepter les terms");
 
-        }else
-        {
-            removeError(checkbox);
+            }else
+            {
+                removeError(checkbox);
+            }
         }
 
-        if (select.options[select.selectedIndex].disabled)
+       /* if (select.options[select.selectedIndex].disabled)
         {
             check(select,true, "Veuillez choisir un service");
         }else
         {
             removeError(select);
-        }
+        }*/
 
         let error = form.querySelectorAll(".is-invalid");
+        console.log(error);
         if (error.length !== 0)
         {
             e.preventDefault();

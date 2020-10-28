@@ -1,0 +1,2 @@
+$router = App::getRouter();
+        dump($router, $router->getRoot(), $router->getMatch());die();

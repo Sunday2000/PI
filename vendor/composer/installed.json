@@ -58,6 +58,48 @@
         ]
     },
     {
+        "name": "ayubirz/perfect-money-api",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/AyubIRZ/PerfectMoneyAPI.git",
+            "reference": "ab6a35e9abd1278381944a2d81fbecae4de867da"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/AyubIRZ/PerfectMoneyAPI/zipball/ab6a35e9abd1278381944a2d81fbecae4de867da",
+            "reference": "ab6a35e9abd1278381944a2d81fbecae4de867da",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.0"
+        },
+        "time": "2019-06-23T19:35:01+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "AyubIRZ\\PerfectMoneyAPI\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "AyubIRZ",
+                "email": "ayubirazeh@gmail.com"
+            }
+        ],
+        "description": "This package lets you easily integrate PerfectMoney API into your PHP application.",
+        "keywords": [
+            "perfectmoney",
+            "php"
+        ]
+    },
+    {
         "name": "filp/whoops",
         "version": "2.3.1",
         "version_normalized": "2.3.1.0",

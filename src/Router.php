@@ -1,29 +1,51 @@
 <?php
 
-namespace App;
+    namespace App;
 
-use AltoRouter;
+    use AltoRouter;
+    use App\Controller\Controller;
 
-class Router
+    class Router
     {
         private $router;
-        private $view_path;
+        private $match;
 
-        public function __construct(string $view)
+        public function __construct()
         {
             $this->router = new AltoRouter();
-            $this->view_path = $view;
         }
 
-        public function get(string $url, string $view, ?string $name = null):self
+        public function getMatch():array
         {
-            $this->router->map('GET', $url, $view, $name);
+            return $this->match;
+        }
+
+        public function setMatch(array $match): void
+        {
+            $this->match = $match;
+        }
+
+        public function get(string $url, $target, ?string $name = null):self
+        {
+            $this->router->map('GET', $url, $target, $name);
             return $this;
         }
 
-        public function post(string $url, string $view, ?string $name = null):self
+        public function post(string $url, $target, ?string $name = null):self
         {
-            $this->router->map('POST', $url, $view, $name);
+            $this->router->map('POST', $url, $target, $name);
+            return $this;
+        }
+
+        public function update(string $url, $target, ?string $name = null):self
+        {   
+            $this->router->map('UPDATE', $url, $target, $name);
+            return $this;
+        }
+
+        public function delete(string $url, $target, ?string $name = null):self
+        {
+            $this->router->map('DELETE', $url, $target, $name);
             return $this;
         }
 
@@ -35,19 +57,27 @@ class Router
         public function run()
         {
             $match = $this->router->match();
-            if ( !is_null($match) )
+            if ( !$match )
             {
-                $view = $this->view_path.DIRECTORY_SEPARATOR.$match['target'].'.php';
-                $router = $this;
-                if ($match['name'] !== 'welcome')
+                $match = $this->router->match(null, "DELETE");
+            }
+
+            if ( !$match )
+            {
+                $match = $this->router->match(null, "UPDATE");
+            }
+           // dump($match); die();
+            $this->setMatch($match ?: []);
+            
+            if ( !empty($match) )
+            {
+                if ( is_callable($match['target']))
                 {
-                    ob_start();
-                        require $view;
-                    $content = ob_get_clean();
-                    require $this->view_path.DIRECTORY_SEPARATOR."all".DIRECTORY_SEPARATOR."layout.php";
-                }else{
-                    require $view;
+                    call_user_func_array($match['target'], $match['params']);
                 }
+            }else
+            {
+                Controller::notFound();
             }
         }
     }

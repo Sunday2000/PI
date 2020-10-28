@@ -33,6 +33,7 @@ class ComposerStaticInitb81f8a96fee0487519ec7d2027e22935
         ),
         'A' => 
         array (
+            'AyubIRZ\\PerfectMoneyAPI\\' => 24,
             'App\\' => 4,
         ),
     );
@@ -61,6 +62,10 @@ class ComposerStaticInitb81f8a96fee0487519ec7d2027e22935
         'Faker\\' => 
         array (
             0 => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker',
+        ),
+        'AyubIRZ\\PerfectMoneyAPI\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ayubirz/perfect-money-api/src',
         ),
         'App\\' => 
         array (

@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Model\User;
-use Exception;
 use PDO;
 
 class Auth
@@ -22,28 +21,50 @@ class Auth
         {
             session_start();
         }
-
-        $id = $_SESSION['auth'];
-        $query = $this->pdo->prepare("SELECT * FROM user WHERE id = :id");
-        $query->execute([
-            'email' => $id
-        ]);
-        $user = $query->fetchObject(User::class);
-
+        
+        $query = null; 
+        $user = null;
+        $id = $_SESSION['auth'] ?? null;
+        
+        if ( !empty($id) )
+        {
+            $query = $this->pdo->prepare("SELECT * FROM user WHERE id = :id");
+            $query->execute([
+                'id' => $id
+            ]);
+            $user = $query->fetchObject(User::class);
+        }
+        
         return $user ?: null;
     }
 
-    public function login(string $email, string $password, string $service): ?User
+    public static function connected(Router $router)
     {
-        $query = $this->pdo->prepare("SELECT * FROM user WHERE email = :email AND service_id = :service");
+        if ( session_status() === PHP_SESSION_NONE )
+        {
+            session_start();
+        }
+
+        if ( isset($_SESSION["auth"]) )
+        {
+            return $_SESSION["auth"];
+        }
+
+        header("Location: {$router->url("login")}");
+        exit();
+        
+    }
+
+    public function login(string $email, string $password): ?User
+    {
+        $query = $this->pdo->prepare("SELECT * FROM user WHERE email = :email");
         $query->execute([
-            'email' => $email,
-            'service'=> $service
+            'email' => $email
         ]);
 
         $query->setFetchMode(PDO::FETCH_CLASS, User::class);
         $user = $query->fetch();
-
+            
         if ( $user === false )
         {
             return null;
@@ -63,56 +84,71 @@ class Auth
         return null;
     }
 
+    /*public function admin_register(array $data, $role = 2)
+    {
+        $date = date('Y-m-d H:i:s');
+        $query = $this->pdo->prepare("INSERT INTO user(role_id, name, surname, profession, country, city, salary, sex, tel, email, password, terms, created_at) VALUES(:role, :name, :surname, :profession, :country, :city, :salary, :sex, :tel, :email, :password, :terms, :date)");
+        return $query->execute([
+            'role' => $role,
+            'name' => htmlentities($data['name']),
+            'surname' => htmlentities($data['surname']),
+            'profession' => htmlentities($data['profession']),
+            'country' => htmlentities($data['country']),
+            'city' => htmlentities($data['city']),
+            'salary' => htmlentities($data['salary']),
+            'sex' => htmlentities($data['sex']),
+            'tel' => htmlentities($data['tel']),
+            'email' =>htmlentities($data['email']),
+            'password' =>password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 12]),
+            'terms' => 1,
+            'date' => $date
+        ]);
+        
+    }*/
+
     public function register(array $data, $role = 1)
     {
-        try
-        {
-            $date = date('Y-m-d H:i:s');
-            $query = $this->pdo->prepare("INSERT INTO user(role_id, service_id, name, surname, tel, email, password, terms, created_at) VALUES(:role, :service, :name, :surname, :tel, :email, :password, :terms, :date)");
-            $query->execute([
-                'role' => $role,
-                'service'=> $data['service'],
-                'name' => htmlentities($data['name']),
-                'surname' => htmlentities($data['surname']),
-                'tel' => htmlentities($data['tel']),
-                'email' =>htmlentities($data['email']),
-                'password' =>password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 12]),
-                'terms' => 1,
-                'date' => $date
-            ]);
-                
-            return true;
-
-        }catch (Exception $e)
-        {
-            dump($e);
-        }
+        $date = date('Y-m-d H:i:s');
+        $query = $this->pdo->prepare("INSERT INTO user(role_id, name, surname, /*profession, country, city, salary,*/ sex, tel, email, password, terms, created_at) VALUES(:role, :name, :surname, /*:profession, :country, :city, :salary,*/ :sex, :tel, :email, :password, :terms, :date)");
+        /*$create_user = */ return $query->execute([
+            'role' => $role,
+            'name' => htmlentities($data['name']),
+            'surname' => htmlentities($data['surname']),
+            //'profession' => htmlentities($data['profession']),
+            //'country' => htmlentities($data['country']),
+            //'city' => htmlentities($data['city']),
+            //'salary' => htmlentities($data['salary']),
+            'sex' => htmlentities($data['sex']),
+            'tel' => htmlentities($data['tel']),
+            'email' =>htmlentities($data['email']),
+            'password' =>password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 12]),
+            'terms' => 1,
+            'date' => $date
+        ]);
         
     }
 
-    public function requireRole(string ...$roles): void
+    public function requireRole(string ...$roles): bool
     {
         $user = $this->user();
         if ( $user === null )
         {
-            $forbid = $this->loginPath;
-            header("Location: $forbid");
-            exit();
+            return false;
         }else
         {
             $pdo = App::getPDO();
-            $query = $pdo->prepare("SELECT role.name AS role_user FROM role INNER JOIN user ON user.role_id = role.id WHERE id = :role_id");
+            $query = $pdo->prepare("SELECT role.name AS role_user FROM role INNER JOIN user ON user.role_id = role.id WHERE role.id = :role_id");
             $query->execute([
-                'role_id' => $user->role_id
+                'role_id' => $user->getRole_id()
             ]);
             $role = $query->fetch(PDO::FETCH_ASSOC);
 
             if (  ! in_array($role['role_user'], $roles))
-            {
-                $forbid = $this->loginPath;
-                header("Location: $forbid");
-                exit();
+            { 
+                return false;
             }
-    }   }
+            return true;
+        }
+   }
 }
 ?>
