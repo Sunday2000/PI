@@ -84,6 +84,11 @@ $router
         $validate->pretPerfect();
     }, 'bpadmin-paiement')
 
+    ->post('/bpadmin/sendFile', function (){
+        $validate = new AdminController();
+        $validate->sendFile();
+    }, 'bpadmin-sendFile')
+
     ->delete('/bpadmin/delete/[i:delete]', function(int $id){
         $delete = new AdminController();
         $delete->pretDelete($id);

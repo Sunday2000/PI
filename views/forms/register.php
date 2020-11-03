@@ -48,7 +48,7 @@
                     </div>
                     <div class="form-group">
                         <input type="checkbox" name="terms" id="terms" class="" />
-                        <label for="terms" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
+                        <label for="terms" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" >Terms of service</a></label>
                     </div>
                     <div class="form-group form-button">
                         <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>

@@ -377,7 +377,7 @@ class User {
                 if (is_dir($root))
                 {
                     move_uploaded_file($file['tmp_name'], $root.DIRECTORY_SEPARATOR.basename($file['name']));
-                }else if ( mkdir($root, 0777) )
+                }else if ( mkdir($root, 0777, true) )
                 {
                     move_uploaded_file($file['tmp_name'], $root.DIRECTORY_SEPARATOR.basename($file['name']));
                 }else

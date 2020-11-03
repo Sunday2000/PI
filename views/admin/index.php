@@ -52,6 +52,7 @@
                                     <th>Retrait</th>
                                     <th>Payé</th>
                                     <th>Fichiers</th>
+                                    <th>Envoyé</th>
                                     <th>Val.</th>
                                     <th>Trans</th>
                                     <th>Update.</th>
@@ -66,6 +67,7 @@
                                     <th>Retrait</th>
                                     <th>Payé</th>
                                     <th>Fichiers</th>
+                                    <th>Envoyé</th>
                                     <th>Val</th>
                                     <th>Trans</th>
                                     <th>Update</th>
@@ -90,6 +92,9 @@
                                                 Aucun
                                             <?php endif ?>
                                         </td>
+                                        <td>
+                                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#file<?= $pret_user->getId() ?>">fichier</a>
+                                        </td>
                                         <td><input type="checkbox" name="validate[]" value="<?=$pret->getId()?>" <?= $pret->getValidate() ? "checked":"" ?>></td>
                                         <?php if ( !empty( $pret->getReceiver() ) ):?>
                                             <td>
@@ -101,7 +106,7 @@
                                             </td>
                                         <?php endif ?>
                                         <td>
-                                            <a href="#" data-toggle="modal" data-target="#update<?= $pret_user->getId() ?>" class="btn btn-secondary ml-auto">Mettre à jour</a>
+                                            <a href="#" data-toggle="modal" data-target="#update<?= $pret_user->getId() ?>" class="btn btn-secondary ml-auto">Modifier</a>
                                         </td>
                                         <td>
                                             <a href="<?= $router->url('bpadmin-delete').$pret->getId() ?>" class="btn btn-danger ml-auto">Supprimer</a>    
@@ -171,7 +176,28 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="<?= $router->url("bpadmin-paiement") ?>" method="POST" enctype="multipart/form-data">
+                                        <form action="<?= $router->url("bpadmin-paiement") ?>" method="POST">
+                                            <?php include dirname(__DIR__).DIRECTORY_SEPARATOR."forms".DIRECTORY_SEPARATOR."perfect.php" ?>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="file<?= $pret_user->getId() ?>" tabindex="-1" role="dialog" aria-labelledby="fileTitle<?= $pret_user->getId() ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="fileTitle<?= $pret_user->getId() ?>">Soumettre un fichier</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="<?= $router->url("bpadmin-sendFile") ?>" method="POST" enctype="multipart/form-data">
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
@@ -182,7 +208,6 @@
                                                     <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                                                 </div>
                                             </div>
-                                            <?php include dirname(__DIR__).DIRECTORY_SEPARATOR."forms".DIRECTORY_SEPARATOR."perfect.php" ?>
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </form>
                                     </div>

@@ -40,9 +40,7 @@ class AdminController extends Controller{
         $pass_error = null;
         
         if (! (empty($_POST['name']) || empty($_POST['surname']) || empty($_POST['tel']) || 
-        empty($_POST['email']) || empty($_POST['password']) /*|| empty($_POST['terms'])
-        || empty($_POST['profession']) || empty($_POST['city']) || empty($_POST['country']) || 
-        empty($_POST['salary'])*/ || empty($_POST['sex']) ))
+        empty($_POST['email']) || empty($_POST['password']) || empty($_POST['sex']) ))
         {
             $insert = App::getAuth();
             $pass_error = ($_POST['password'] === $_POST['re_pass']) ? false : true;
@@ -385,7 +383,7 @@ class AdminController extends Controller{
         $this->render('admin/index' ,compact("user", "prets", "pret_op", "file_error", "pm_transfert_error", "pm_transfert"));
     }
 
-    public function pretPerfect()
+    public function sendFile()
     {
         $user = $this->isAdmin();
         extract($this->pretDefaultVariables(), EXTR_SKIP);
@@ -398,6 +396,14 @@ class AdminController extends Controller{
             $file_error = $this->file(true);
         }
 
+        $this->render('admin/index', compact("user", "prets", "file_error", "pm_transfert_error", "pm_transfert"));
+    }
+
+    public function pretPerfect()
+    {
+        $user = $this->isAdmin();
+        extract($this->pretDefaultVariables(), EXTR_SKIP);
+        $prets = Pret::getAll();
 
         if ( !( empty($_POST['pm_login']) || empty($_POST['pm_pass']) ) )
         {
